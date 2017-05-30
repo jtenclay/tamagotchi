@@ -1,0 +1,21 @@
+body {
+	background-color: beige;
+	font-size:1rem;
+}
+
+.lights-off {
+	background-color: black;
+}
+
+#wrapper {
+	margin: 0 auto;
+	max-width:50rem;
+}
+
+img {
+	width: 100%;
+}
+
+#game-over-message {
+	display: none;
+}
