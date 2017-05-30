@@ -8,6 +8,8 @@ var myPet = {
 	hunger: 0,
 };
 
+var petImage = document.getElementById("pet-image");
+
 
 
 // name pet
@@ -76,13 +78,24 @@ var ageTicker = setInterval(function(){
 	},10000);
 
 var sleepinessTicker = setInterval(function(){
-		myPet.sleepiness++;
-		document.getElementById("sleepiness").textContent = myPet.sleepiness;
-		checkForGameOver();
+		if (body.classList.contains("lights-off")) {
+			if (myPet.sleepiness > 0) {
+				myPet.sleepiness--;
+				document.getElementById("sleepiness").textContent = myPet.sleepiness;
+			};
+		} else {
+			myPet.sleepiness++;
+			document.getElementById("sleepiness").textContent = myPet.sleepiness;
+			checkForGameOver();
+		};
 	},3000);
 
 var boredomTicker = setInterval(function(){
-		myPet.boredom++;
+		if (body.classList.contains("lights-off")) {
+			myPet.boredom += 2;
+		} else {
+			myPet.boredom += 1;
+		};
 		document.getElementById("boredom").textContent = myPet.boredom;
 		checkForGameOver();
 	},3000);
@@ -92,7 +105,7 @@ var boredomTicker = setInterval(function(){
 // clear intervals and display game over
 
 var checkForGameOver = function(){
-	if (myPet.boredom === 10 || myPet.hunger === 10 || myPet.sleepiness === 10) {
+	if (myPet.boredom >= 10 || myPet.hunger >= 10 || myPet.sleepiness >= 10) {
 		gameOver();
 	};
 };
@@ -103,6 +116,7 @@ var gameOver = function() {
 	clearInterval(sleepinessTicker);
 	clearInterval(ageTicker);
 	document.getElementById("game-over-message").style.display = "block";
+	petImage.setAttribute("src","img/nap.jpg");
 }
 
 

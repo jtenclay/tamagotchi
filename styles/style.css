@@ -3,8 +3,16 @@ body {
 	font-size:1rem;
 }
 
+.lights-off p {
+	color: white;
+}
+
 .lights-off {
 	background-color: black;
+}
+
+#playpen {
+	text-align:center;
 }
 
 #wrapper {
@@ -13,7 +21,7 @@ body {
 }
 
 img {
-	width: 100%;
+	max-width: 100%;
 }
 
 #game-over-message {
