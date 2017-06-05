@@ -119,6 +119,8 @@ var checkForGameOver = function(){
 	};
 };
 
+var isDead = false
+
 var gameOver = function() {
 	clearInterval(hungerTicker);
 	clearInterval(boredomTicker);
@@ -126,6 +128,16 @@ var gameOver = function() {
 	clearInterval(ageTicker);
 	$("#game-over-message").css("display","block");
 	petImage.attr("src","img/nap.jpg");
+	isDead = true;
+	$("#feed-button").hide();
+	$("#pet-button").hide();
+	if (myPet.boredom >= 10) {
+		$("#boredom").addClass("game-over");
+	} else if (myPet.hunger >= 10) {
+		$("#hunger").addClass("game-over");
+	} else if (myPet.sleepiness >= 10) {
+		$("#sleepiness").addClass("game-over");
+	} else {}
 };
 
 $("#reset-button").click(function(){
@@ -180,11 +192,15 @@ var bouncePetLeft = function() {
 	    } else {
 	    	var rand = Math.floor((Math.random() * 2));
 	    	if (rand === 0) {
-	    		bouncePetLeft();
-	        	loop();
+//	    		if (isDead === false) {
+	    			bouncePetLeft();
+	        		loop();
+//	        	};
 	    	} else {
-	    		bouncePet();
-	        	loop();
+//	    		if (isDead === false) {
+	    			bouncePet();
+	        		loop();
+//	        	};
 	    	};
 	    };
     }, rand);
@@ -224,40 +240,51 @@ $('#name-input').keypress(function (e) {
 
 
 
-// make random divs appear for feeding etc.
+// make random divs appear
 
-function makeDiv(text){
+function makeDiv(){
     // vary size for fun
-    var divsize = ((Math.random()*100) + 50).toFixed();
     var divRotation = ((Math.random()*80) - 40).toFixed();
     var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
+    var text = ""
+
+    if (isDead === false) {
+		if (Math.floor(Math.random() * 2) === 0) {
+			text = "wow!";
+		} else {
+			text = "cute";
+		};
+	} else {
+		text = ":(";
+	}
+
     $newdiv = $('<div/>').css({
     	"-ms-transform": "rotate("+divRotation+"deg)",
    		"-webkit-transform": "rotate("+divRotation+"deg)",
     	"transform": "rotate("+divRotation+"deg)",
-        'width':divsize+'px',
-        'height':divsize+'px',
         'color': color
     }).text(text);
 
     // make position sensitive to size and document's width
-    var posx = (Math.random() * ($(document).width() - divsize)).toFixed();
-    var posy = (Math.random() * ($(document).height() - divsize)).toFixed();
+    var posx = ((Math.random() * ($("#pet-image").width() - 100)) + $("#pet-image").offset().left).toFixed();
+    var posy = ((Math.random() * ($("#pet-image").height() - 100)) + $("#pet-image").offset().top).toFixed();
 
     $newdiv.css({
         'position':'absolute',
         'left':posx+'px',
         'top':posy+'px',
         'display':'none',
-        "font-size":"2rem"
+        "font-size":"3rem"
     }).appendTo('body').fadeIn(100).delay(500).fadeOut(400, function(){
       $(this).remove();
       makeDiv(text); 
     }); 
 };
 
-makeDiv("Yum!");
 
+// randomly Wow! or Cute
+
+makeDiv();
 
 
 
